@@ -1,0 +1,5 @@
+Flask
+python-docx
+gunicorn
+psycopg2-binary # PostgreSQL adapter
+Flask-SQLAlchemy # Recommended if you plan to use an ORM
