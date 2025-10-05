@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e0f7fa;
+            color: #2c3e50;
+            line-height: 1.6;
+            padding: 0 20px;
+        }
+    
+        h1, h2 {
+            font-family: 'Roboto', sans-serif;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+    
+        h2 {
+            color:rgb(21, 22, 22);
+        }
+    
+        /* Navigation Menu */
+        nav {
+            background-color:rgb(4, 8, 10);
+            padding: 15px 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+    
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            margin: 0 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+    
+        nav a:hover {
+            background-color: #2980b9;
+        }
+    
+        .logout-btn {
+            float: right;
+            background-color: #e74c3c;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+    
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+    
+        /* Search Form */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+    
+        .search-container input {
+            width: 80%;
+            padding: 15px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+    
+        .search-container button {
+            padding: 15px 20px;
+            background-color:rgb(22, 233, 85);
+            color: white;
+            font-size: 38px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        .search-container button:hover {
+            background-color:rgb(41, 185, 77);
+        }
+    
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+    
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+    
+        td {
+            font-size: 14px;
+        }
+    
+        tr:nth-child(even) {
+            background-color: #f1f1f1;
+        }
+    
+        tr:hover {
+            background-color: #ecf0f1;
+        }
+    
+        button, .btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        button:hover, .btn:hover {
+            background-color: #2980b9;
+        }
+        /* Background Images */
+        .background-img {
+            position: absolute;
+            width: 430px; /* Adjust image size */
+            height: 500px;
+            opacity: 0.3; /* Make it semi-transparent */
+            z-index: -1; /* Keep behind content */
+        }
+
+        .bg1 {
+            top: 50px;
+            left: 30px;
+        }
+
+        .bg2 {
+            top: 1px;
+            bottom: 10px;
+            right: 50px;
+        }
+
+        .bg3 {
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    
+        .pagination a {
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+    
+        .pagination a.disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    
+        .pagination a:hover {
+            background-color: #2980b9;
+        }
+    
+        .container-return {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+    
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+    
+        /* Countdown Timer */
+        .countdown {
+            font-size: 14px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+    
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 10px 20px;
+            }
+    
+            .container {
+                padding: 15px;
+            }
+    
+            table {
+                font-size: 12px;
+            }
+    
+            th, td {
+                padding: 8px;
+            }
+    
+            .pagination a {
+                padding: 8px 12px;
+            }
+    
+            .container-return {
+                max-width: 100%;
+                padding: 10px;
+            }
+        }
+    </style>
+    
+    
+</head>
+<body>
+    <img src="{{ url_for('static', filename='images/background2.jpeg') }}" class="background-img bg2" alt="Decoration">
+    <img src="{{ url_for('static', filename='images/background3.jpeg') }}" class="background-img bg3" alt="Decoration">
+    <img src="{{ url_for('static', filename='images/background4.jpeg') }}" class="background-img bg4" alt="Decoration">
+    
+<!-- Navigation Menu -->
+<nav>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('books') }}">Books </a>
+    
+   
+    <a href="{{ url_for('view_users') }}">Users</a>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+</nav>
+
+<!-- Available Books Section -->
+<div class="container">
+    <h2>Available Books</h2>
+
+    <!-- Add Book Button and Search Form -->
+    <div class="action-buttons">
+        <a href="{{ url_for('register_book') }}">
+            <button>Add New Book</button>
+        </a>
+        <form method="GET" action="{{ url_for('books') }}">
+            <input type="text" name="search" value="{{ search_query }}" placeholder="Search by title" />
+            <button type="submit">Search</button>
+        </form>
+        <a href="{{ url_for('generate_pdf_report') }}">
+            <button>Download Report as PDF</button>
+        </a>
+    </div>
+
+    {% if books %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Publication Year</th>
+                    <th>Class</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.id }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.isbn }}</td>
+                    <td>{{ book.publication_year }}</td>
+                    <td>{{ book.class }}</td>
+                    <td>{{ book.quantity }}</td>
+                    <td>
+                        {% if book.quantity > 0 %}
+                        <a href="{{ url_for('borrow_books', book_id=book.id) }}">
+                            <button>Borrow</button>
+                        </a>
+                        {% else %}
+                        <button disabled>Out of Stock</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('books', page=page-1) }}">Previous</a>
+            {% else %}
+                <a class="disabled">Previous</a>
+            {% endif %}
+
+            <span>Page {{ page }} of {{ total_pages }}</span>
+
+            {% if page < total_pages %}
+                <a href="{{ url_for('books', page=page+1) }}">Next</a>
+            {% else %}
+                <a class="disabled">Next</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No books available.</p>
+    {% endif %}
+</div>
+
+<!-- Borrowed Books Section -->
+<div class="container">
+    <h2>Borrowed Books</h2>
+    <p><strong></strong> {{ total_borrowed_books }}</p>
+
+    {% if borrowed_books %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Borrower</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Class</th>
+                    <th>Books Borrowed</th>
+                    <th>Due Date</th>
+                    <th>Remaining Time</th>
+                    <th>Returned Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in borrowed_books %}
+                <tr>
+                    <td>{{ book.borrower_name }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    
+                    <td>{{ book.class }}</td>
+                    <td>{{ book.quantity }}</td>
+                    <td>{{ book.due_date }}</td>
+                    <td>
+                        <div class="countdown" id="countdown-{{ book.id }}">
+                            <script>
+                                function countdown(id, dueDate) {
+                                    const countdownElement = document.getElementById(id);
+                                    const targetDate = new Date(dueDate);
+                                    const interval = setInterval(function() {
+                                        const currentDate = new Date();
+                                        const timeDifference = targetDate - currentDate;
+                            
+                                        if (timeDifference <= 0) {
+                                            clearInterval(interval);
+                                            countdownElement.innerHTML = "Overdue!";
+                                        } else {
+                                            const daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                                            const hoursLeft = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                            const minutesLeft = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                                            const secondsLeft = Math.floor((timeDifference % (1000 * 60)) / 1000);
+                                            countdownElement.innerHTML = `${daysLeft}d ${hoursLeft}h ${minutesLeft}m ${secondsLeft}s remaining`;
+                                        }
+                                    }, 1000);
+                                }
+                                countdown('countdown-{{ book.id }}', '{{ book.due_date }}');
+                            </script>
+                        </div>
+                    </td>
+                    <td>{{ book.returned_date if book.returned_date else 'Not returned yet' }}</td>
+                    <td>
+                        {% if book.due_date %}
+                        <a href="{{ url_for('return_book', book_id=book.id) }}">
+                            <button class="btn-danger">Return</button>
+                        </a>
+                        {% else %}
+                        <button class="btn-danger" disabled>Return</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination Controls -->
+        <div class="pagination">
+            {% if prev_page %}
+                <a href="{{ url_for('borrowed_books', page=prev_page) }}" class="btn">Previous</a>
+            {% endif %}
+            <span>Page {{ page }} of {{ total_pages }}</span>
+            {% if next_page %}
+                <a href="{{ url_for('borrowed_books', page=next_page) }}" class="btn">Next</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No borrowed books found.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Return Books</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        h1, h3 {
+            text-align: center;
+            color: #333;
+        }
+        .table th {
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+        }
+        .btn-return {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .btn-return:hover {
+            background-color: #218838;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination a {
+            text-decoration: none;
+            background: #007BFF;
+            color: white;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .pagination a:hover {
+            background: #0056b3;
+        }
+        nav {
+            background: #007BFF;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <a href="{{ url_for('books') }}">Dashboard</a>
+        <a href="{{ url_for('view_all_fines') }}">Fines</a>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </nav>
+
+    <div class="container">
+        <h1>Return Books</h1>
+
+        <!-- Display messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert alert-{{ messages[0][0] }}">
+                    {{ messages[0][1] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <h3>Book ID: {{ book_id }}</h3>
+
+        <!-- Borrowed Books Table -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Borrow ID</th>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Quantity</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for borrowed_book in borrowed_books %}
+                    <tr>
+                        <td>{{ borrowed_book.borrow_id }}</td>
+                        <td>{{ borrowed_book.title }}</td>
+                        <td>{{ borrowed_book.author }}</td>
+                        <td>{{ borrowed_book.quantity }}</td>
+                        <td>{{ borrowed_book.due_date }}</td>
+                        <td>{{ borrowed_book.status }}</td>
+                        <td>
+                            <form action="{{ url_for('return_book', book_id=book_id) }}" method="POST">
+                                <button type="submit" class="btn btn-success">Returned</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center">No borrowed books available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Pagination Controls -->
+        <div class="pagination">
+            {% if prev_page %}
+                <a href="{{ url_for('return_book', book_id=book_id, page=prev_page) }}" class="btn btn-primary">Previous</a>
+            {% endif %}
+            {% if next_page %}
+                <a href="{{ url_for('return_book', book_id=book_id, page=next_page) }}" class="btn btn-primary">Next</a>
+            {% endif %}
+        </div>
+
+        <div class="mt-4">
+            <p><strong>Total Days Borrowed:</strong> {{ total_days_borrowed }}</p>
+            <p><strong>Remaining Days:</strong> {{ remaining_days }}</p>
+            <p><strong>Total Fee Charged:</strong> {{ charge_fee }} RWF</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration and Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 16px;
+        }
+        .navbar a:hover {
+            background-color: #575757;
+            border-radius: 5px;
+        }
+        .form-container, .search-container, .report-container {
+            background-color: white;
+            padding: 20px;
+            margin: 30px auto;
+            width: 50%;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+        }
+        input[type="text"], input[type="date"], input[type="email"] {
+            width: 90%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .checkbox-group label {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .student-list {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Menu -->
+    <div class="navbar">
+        <a href="dashboard">Home</a>
+        <a href="register_student">Register</a>
+        <a href="view_students">view Register students</a>
+        <a href="generate-report">Generate Report</a>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="form-container" id="register-form">
+        <h2>Student Registration</h2>
+        <form method="POST" action="{{ url_for('register_student') }}">
+            <label for="student_name">Student Name:</label>
+            <input type="text" id="student_name" name="student_name" required>
+
+            <label for="student_id">Student ID:</label>
+            <input type="text" id="student_id" name="student_id" required>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="gender">Gender:</label>
+            <input type="text" id="gender" name="gender" required>
+
+            <label for="nationality">Nationality:</label>
+            <input type="text" id="nationality" name="nationality" required>
+
+            <label for="contact">Contact:</label>
+            <input type="text" id="contact" name="contact">
+
+            <label for="guardian_name">Guardian Name:</label>
+            <input type="text" id="guardian_name" name="guardian_name" required>
+
+            <label for="guardian_contact">Guardian Contact:</label>
+            <input type="text" id="guardian_contact" name="guardian_contact" required>
+
+            <label>Choose Subjects:</label>
+            <div class="checkbox-group">
+               
+
+    <label><input type="checkbox" name="subjects[]" value="Math"> Math</label>
+    <label><input type="checkbox" name="subjects[]" value="English"> English</label>
+    <label><input type="checkbox" name="subjects[]" value="Physics"> Physics</label>
+    <label><input type="checkbox" name="subjects[]" value="Chemistry"> Chemistry</label>
+    <label><input type="checkbox" name="subjects[]" value="Biology"> Biology</label>
+    <label><input type="checkbox" name="subjects[]" value="Geography"> Geography</label>
+</div>
+
+            
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+   
+
+    
+</body>
+</html>

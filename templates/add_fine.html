@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Fine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 50%;
+            max-width: 600px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        input[type="text"], input[type="number"], input[type="email"], select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Flash message styles */
+        .flash-message {
+            display: block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .flash-message.danger {
+            background-color: #f44336;
+        }
+
+        .flash-message.info {
+            background-color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Add Fine</h1>
+
+        <!-- Flash messages (success, error, etc.) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-message {{ messages[0][0] }}">
+                    {% for category, message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Fine Submission Form -->
+        <form action="{{ url_for('add_fine') }}" method="POST">
+            <label for="name">User Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">User Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="amount">Fine Amount:</label>
+            <input type="number" id="amount" name="amount" required>
+
+            <label for="status">Fine Status:</label>
+            <select id="status" name="status" required>
+                <option value="Unpaid">Unpaid</option>
+                <option value="Paid">Paid</option>
+            </select>
+
+            <button type="submit">Add Fine</button>
+        </form>
+    </div>
+
+</body>
+</html>

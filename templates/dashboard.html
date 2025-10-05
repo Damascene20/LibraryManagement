@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef; /* Light gray background */
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        /* Background Images */
+        .background-img {
+            position: absolute;
+            width: 430px; /* Adjust image size */
+            height: 500px;
+            opacity: 0.3; /* Make it semi-transparent */
+            z-index: -1; /* Keep behind content */
+        }
+
+        .bg1 {
+            top: 50px;
+            left: 30px;
+        }
+
+        .bg2 {
+            top: 1px;
+            bottom: 10px;
+            right: 50px;
+        }
+
+        .bg3 {
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Navbar Styles */
+        nav {
+            background-color:rgb(7, 9, 12); /* Blue background for navbar */
+            overflow: hidden;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav a {
+            display: inline-block;
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Container Styles */
+        .container {
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 200px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-box h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #007bff;
+        }
+
+        .stat-box p {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #555;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer .quick-links {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        footer .quick-links li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        footer .quick-links li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer .quick-links li a:hover {
+            text-decoration: underline;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Images -->
+
+<img src="{{ url_for('static', filename='images/background2.jpeg') }}" class="background-img bg2" alt="Decoration">
+<img src="{{ url_for('static', filename='images/background3.jpeg') }}" class="background-img bg3" alt="Decoration">
+<img src="{{ url_for('static', filename='images/background4.jpeg') }}" class="background-img bg4" alt="Decoration">
+
+
+
+    <!-- Navigation Menu -->
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+
+        <a href="/books">Books</a>
+        <a href="/fines">Fines</a>
+        <a href="/register_teacher">Teacher</a>
+        <a href="/register_student">Student</a>
+        <a href="/profile">Profile</a>
+        <a href="{{ url_for('register') }}">Add Users</a>
+        <a href="/change_password">Settings</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Welcome To Library Management System of GS MUKONDO, {{ user['name'] }} Gubwa neza</h1>
+        <div class="stats">
+            <div class="stat-box">
+                <h3>Total Books</h3>
+                <p>{{ total_books }}</p>
+            </div>
+            <div class="stat-box">
+                <h3>Total Borrowed Books</h3>
+                <p>{{ total_borrowed_books }}</p>
+            </div>
+            <div class="stat-box">
+                <h3>Total Unpaid Fines</h3>
+                <p>{{ total_fines }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with Quick Links -->
+    <footer>
+        <ul class="quick-links">
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+        </ul>
+    </footer>
+
+</body>
+</html>

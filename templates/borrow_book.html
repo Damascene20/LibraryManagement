@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Book</title>
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh; /* Full height */
+            flex-direction: column;
+        }
+
+        /* Menu Styling */
+        nav {
+            width: 100%;
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        nav a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Form Container */
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.1rem;
+        }
+
+        /* Buttons */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .cancel-btn {
+            background-color: #f44336; /* Red color for the cancel button */
+            margin-top: 10px;
+        }
+
+        .cancel-btn:hover {
+            background-color: #e53935;
+        }
+
+        /* Styling for borrowed books list */
+        h3 {
+            margin-top: 30px;
+            font-size: 1.6rem;
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            font-size: 1.1rem;
+            text-align: left;
+        }
+
+        ul li {
+            padding: 8px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .returned {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .not-returned {
+            font-weight: bold;
+            color: #f44336;
+        }
+
+        /* Error Message Styling */
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            label, input, select {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <a href="{{ url_for('books') }}">Dashboard</a>
+        <a href="{{ url_for('view_all_fines') }}">Fines</a>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </nav>
+
+    <div class="container">
+        <h2>Borrow a Book</h2>
+
+        <!-- Flash Message -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                {% for category, message in messages %}
+                    <li class="flash {{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Check if a book exists -->
+        {% if book %}
+            <p><strong>Book Title:</strong> {{ book.title }}</p>
+            <p><strong>Available Copies:</strong> {{ book.quantity }}</p>
+
+            <p><strong>Total Books Borrowed:</strong> {{ borrowed_count }}</p>
+
+            {% if borrowed_count >= book.quantity %}
+                <p class="error">You cannot borrow more books as you have reached the limit.</p>
+            {% else %}
+                <form action="{{ url_for('borrow_books', book_id=book.id) }}" method="POST">
+                    <label for="borrower_name">Choose Borrower:</label>
+                    <select id="borrower_name" name="borrower_name" required>
+                        <option value="--select--">--select--</option>
+                        <option value="NYIRARENZAHO Leonie">NYIRARENZAHO Leonie</option>
+                        <option value="NIYIGENA Donatha">NIYIGENA Donatha</option>
+                        <option value="NSHIMIRYAYO Jean Damascene">NSHIMIRYAYO Jean Damascene</option>
+                        <option value="MANIRIHO PASCAL">MANIRIHO PASCAL</option>
+                        <option value="RUDATINYA Gabriel">RUDATINYA Gabriel</option>
+                        <option value="PALUKU KAPALALO">PALUKU KAPALALO</option>
+                        <option value="BARANYERETSE ANATHALIE">BARANYERETSE ANATHALIE</option>
+                        <option value="UMUTESI MARIE JOSEE">UMUTESI MARIE JOSEE</option>
+                        <option value="NSENGIYUMVA JEAN DAMASCENE">NSENGIYUMVA JEAN DAMASCENE</option>
+                        <option value="HARAGIRIMANA FAUSTIN">HARAGIRIMANA FAUSTIN</option>
+                        <option value="MANIRAFASHA JOSEPH">MANIRAFASHA JOSEPH</option>
+                        <option value="AKAYEZU JEANNE">AKAYEZU JEANNE</option>
+                        <option value="NDUWAYEZU Donatien">NDUWAYEZU Donatien</option>
+                        <option value="DUSHIMIRIMANA DIDIER">DUSHIMIRIMANA DIDIER</option>
+                        <option value="HABIMANA SCHADRACK">HABIMANA SCHADRACK</option>
+                        <option value="UWIRINGIYIMANA OLIVE">UWIRINGIYIMANA OLIVE</option>
+                        <option value="NIZEYIMANA THEOGENE">NIZEYIMANA THEOGENE</option>
+                        <option value="NTARIBASOBA CLEOPHAS">NTARIBASOBA CLEOPHAS</option>
+                        <option value="NIYONSENGA PLACIDE">NIYONSENGA PLACIDE</option>
+                        <option value="NDAYISABYE OLIVE">NDAYISABYE OLIVE</option>
+                        <option value="HAGUMIMANA DAMIEN">HAGUMIMANA DAMIEN</option>
+                        <option value="MITENGEZO UWIMANA">MITENGEZO UWIMANA</option>
+                        <option value="MUSABYIMANA SPECIOSE">MUSABYIMANA SPECIOSE</option>
+                        <option value="IRANKUNDA Alphonsine">IRANKUNDA Alphonsine</option>
+                        <option value="NTAKAYOBAZI Theogene">NTAKAYOBAZI Theogene</option>
+                        <option value="NDAGIJIMANA JEAN CLAUDE">NDAGIJIMANA JEAN CLAUDE</option>
+                        <option value="NIYOTWIZEYE JEAN MARIE VIANNEY">NIYOTWIZEYE JEAN MARIE VIANNEY</option>
+                        <option value="DUFATANYE ADRIEN">DUFATANYE ADRIEN</option>
+                        <option value="UBURIYE MAKORO EDIMON">UBURIYE MAKORO EDIMON</option>
+                        <option value="IREBAHOSE BERNADETTE">IREBAHOSE BERNADETTE</option>
+                        <option value="NYIRASHUMBUSHA Immaculee">NYIRASHUMBUSHA Immaculee</option>
+                        <option value="UWIRINGIYIMANA Dieudonne">UWIRINGIYIMANA Dieudonne</option>
+                        <option value="MUKARUGWIZA Solange">MUKARUGWIZA Solange</option>
+                        <option value="DUSABIMANA EMMANUEL">DUSABIMANA EMMANUEL</option>
+                        <option value="DUKUZUMUREMYI Jean Baptiste">DUKUZUMUREMYI Jean Baptiste</option>
+                        <option value="NYIRAMUTARAMBIRWA FLORENCE">NYIRAMUTARAMBIRWA FLORENCE</option>
+                        <option value="NZAMURAMBAHO VIATEUR">NZAMURAMBAHO VIATEUR</option>
+                        <option value="NIRERE BERNADETTE">NIRERE BERNADETTE</option>
+                        <option value="MULISA UWINGABIYE">MULISA UWINGABIYE</option>
+                        <option value="HARERIMANA EVARISTE">HARERIMANA EVARISTE</option>
+                        <option value="MUSHIMIYIMANA LADOUCE">MUSHIMIYIMANA LADOUCE</option>
+                        <option value="NIYOMUREMYI TUMAINE">NIYOMUREMYI TUMAINE</option>
+                        
+                        <option value="TABARO MODESTE">TABARO MODESTE</option>
+                        <option value="NYIRAHIRANA JULIETTE">NYIRAHIRANA JULIETTE</option>
+                        <option value="IRANZI Alexandre">IRANZI Alexandre</option>
+                        <option value="NZAYISENGA SCHADRACK">NZAYISENGA SCHADRACK</option>
+                        <option value="TWUMVIRIMANA INNOCENT">TWUMVIRIMANA INNOCENT</option>
+                    </select>
+                    
+
+                    <label for="position">Position:</label>
+                    <select id="position" name="position" required>
+                        <option value="--select--">--select--</option>
+                        <option value="Student">Student</option>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Leader">Leader</option>
+                    </select>
+
+                    <label for="quantity">Number of Copies:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="{{ book.quantity }}" value="1" required>
+
+                    <button type="submit">Borrow Book</button>
+                    <button type="button" class="cancel-btn" onclick="window.history.back()">Cancel</button> <!-- Cancel button -->
+                </form>
+            {% endif %}
+        {% else %}
+            <p>No book found.</p>
+        {% endif %}
+
+        <!-- List of Borrowed Books -->
+        {% if borrowed_books %}
+            <h3>Borrowed Books</h3>
+            <ul>
+                {% for book in borrowed_books %}
+                    <li>
+                        <strong>{{ book.title }}</strong><br>
+                        Borrow Date: {{ book.borrow_date }}<br>
+                        Due Date: {{ book.due_date }}<br>
+                        {% if book.remaining_days > 0 %}
+                            Remaining Days: {{ book.remaining_days }} days
+                        {% else %}
+                            <span class="returned">Returneds</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+</body>
+</html>

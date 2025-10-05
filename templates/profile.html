@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        /* Add your styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Menu styles */
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #575757;
+        }
+
+        /* Container for profile content */
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .flash-message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .flash-message.success {
+            background-color: green;
+        }
+
+        .flash-message.warning {
+            background-color: orange;
+        }
+
+        .flash-message.danger {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menu (Navigation Bar) -->
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/profile" class="active">Profile</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+    <div class="container">
+        <h1>Profile</h1>
+
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul>
+                    {% for category, message in messages %}
+                        <li class="flash-message {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+  
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Profile</title>
+            <style>
+                body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; text-align: center; }
+                nav { background-color: #333; padding: 10px 0; }
+                nav a { color: white; text-decoration: none; padding: 14px 20px; font-size: 16px; }
+                nav a:hover { background-color: #575757; border-radius: 5px; }
+                .container { max-width: 500px; margin: 50px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0,0,0,0.1); }
+                img { width: 150px; height: 150px; border-radius: 50%; margin-bottom: 20px; }
+                input, button { padding: 10px; width: 100%; margin-top: 10px; }
+                button { background-color: #28a745; color: white; border: none; cursor: pointer; }
+                button:hover { background-color: #218838; }
+                .flash-message { margin-bottom: 15px; padding: 10px; border-radius: 5px; color: white; }
+                .flash-message.success { background-color: green; }
+            </style>
+        </head>
+        <body>
+        
+            <nav>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/profile" class="active">Profile</a>
+                <a href="/logout">Logout</a>
+            </nav>
+        
+            <div class="container">
+                <h2>User Profile</h2>
+        
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <p class="flash-message {{ category }}">{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+        
+                {% if user['profile_picture'] %}
+                    <img src="{{ url_for('static', filename='uploads/' + user['profile_picture']) }}" alt="Profile Picture">
+                {% else %}
+                    <img src="{{ url_for('static', filename='uploads/default.jpeg') }}" alt="Profile Picture">
+                {% endif %}
+        
+                <form method="POST" enctype="multipart/form-data">
+                    <input type="text" name="name" value="{{ user['name'] }}" required>
+                    <input type="email" name="email" value="{{ user['email'] }}" required>
+                    <input type="text" name="role" value="{{ user['role'] }}" readonly>
+                    <input type="text" name="status" value="{{ user['status'] }}" readonly>
+                    <label>Change Profile Picture:</label>
+                    <input type="file" name="profile_picture">
+                    <button type="submit">Update Profile</button>
+                </form>
+        
+                <button onclick="changeProfile()">Change Profile</button>
+            </div>
+        
+            <script>
+                function changeProfile() {
+                    alert('Change Profile button clicked! Implement functionality here.');
+                }
+            </script>
+        
+        </body>
+        </html>
+        
